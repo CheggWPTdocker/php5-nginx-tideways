@@ -3,11 +3,15 @@ FROM cheggwpt/php5-nginx:0.0.1
 # Tideways ENVs
 ENV TIDEWAYS_PORT_UDP 8135
 ENV TIDEWAYS_PORT_TCP 9135
+ENV TIDEWAYS_ENV production
 ENV tideways_version 1.5.3
 ENV tideways_ext_version 4.0.7
 ENV tideways_php_version 2.0.14
 ENV tideways_dl https://github.com/tideways/
 ENV php_ini_dir /etc/php5/conf.d
+
+# Load ash profile on launch
+ENV ENV=/etc/profile
 
 RUN	apk --update add --virtual .build_package \
 		git curl file build-base autoconf
@@ -52,3 +56,6 @@ RUN php -m && php --ini
 
 # Add the config
 COPY container_confs /
+
+#
+RUN chmod a+rwx /start_tideways.sh
